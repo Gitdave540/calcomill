@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promille Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #dff0d8;
+            border: 1px solid #d6e9c6;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .result img {
+            max-width: 200px;
+            height: auto;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Promille Calculator</h1>
+        <div class="input-group">
+            <label for="liter">Flüssigkeit vorhanden (Liter):</label>
+            <input type="number" id="liter" placeholder="Enter liter value (e.g., 100)" required>
+        </div>
+        <div class="input-group">
+            <label for="promille">Flüssigkeit vorhanden (Promille):</label>
+            <input type="number" id="promille" placeholder="Enter promille value (e.g., 46)" required>
+        </div>
+        <div class="input-group">
+            <label for="targetPromille">Zu erreichende gesammt Promille:</label>
+            <input type="number" id="targetPromille" placeholder="Enter promille value (e.g., 34)" required>
+        </div>
+        <div class="input-group">
+            <label for="addedPromille">Zugefügte Flüssigkeit Promille:</label>
+            <input type="number" id="addedPromille" placeholder="Enter promille value (e.g., 0)" required>
+        </div>
+        <button onclick="calculate()">Berechnen</button>
+        <div id="results" class="result" style="display:none;">
+            <p><strong>Beizufügende Liter:</strong> <span id="addedLiters"></span> l</p>
+            <p><strong>Totales Liter:</strong> <span id="totalLiters"></span> l</p>
+            <p><strong>Totales Promille:</strong> <span id="totalPromille"></span> ‰</p>
+            <img id="resultImage" src="Logo_LD-removebg-preview.png" alt="Logo">
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            // Input values
+            const liter = parseFloat(document.getElementById("liter").value);
+            const promille = parseFloat(document.getElementById("promille").value);
+            const targetPromille = parseFloat(document.getElementById("targetPromille").value);
+            const addedPromille = parseFloat(document.getElementById("addedPromille").value);
+
+            // Ensure values are valid
+            if (isNaN(liter) || isNaN(promille) || isNaN(targetPromille) || isNaN(addedPromille) || addedPromille >= targetPromille) {
+                alert("Bitte geben Sie gültige Werte ein.");
+                return;
+            }
+
+            // Formulas
+            const addedLiters = ((-liter * promille) + (liter * targetPromille)) / (addedPromille - targetPromille);
+            const totalLiters = liter + addedLiters;
+
+            // Display results
+            document.getElementById("addedLiters").textContent = addedLiters.toFixed(3);
+            document.getElementById("totalLiters").textContent = totalLiters.toFixed(2);
+            document.getElementById("totalPromille").textContent = targetPromille.toFixed(0);
+
+            // Show results box
+            document.getElementById("results").style.display = "block";
+        }
+    </script>
+</body>
+</html>
