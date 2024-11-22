@@ -42,6 +42,12 @@
             height: auto;
             margin-top: 15px;
         }
+        .philosophy {
+            margin-top: 20px;
+            font-style: italic;
+            color: #555;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -74,6 +80,9 @@
             <p><strong>Totales Promille:</strong> <span id="totalPromille"></span> ‰</p>
             <img id="resultImage" src="Logo_LD-removebg-preview.png" alt="Logo">
         </div>
+        <div id="philosophy" class="philosophy" style="display:none;">
+            <!-- Random philosophical quote will be displayed here -->
+        </div>
     </div>
 
     <script>
@@ -104,6 +113,50 @@
             return 1.000; // Default fallback
         }
     
+        // Array of philosophical quotes
+        const quotes = [
+            "The only true wisdom is in knowing you know nothing. - Socrates",
+            "Happiness is not something ready made. It comes from your own actions. - Dalai Lama",
+            "The unexamined life is not worth living. - Socrates",
+            "To be, or not to be, that is the question. - William Shakespeare",
+            "Life is what happens when you're busy making other plans. - John Lennon",
+            "In three words I can sum up everything I've learned about life: it goes on. - Robert Frost",
+            "Not all those who wander are lost. - J.R.R. Tolkien",
+            "The journey of a thousand miles begins with one step. - Lao Tzu",
+            "Do not go where the path may lead, go instead where there is no path and leave a trail. - Ralph Waldo Emerson",
+            "You must be the change you wish to see in the world. - Mahatma Gandhi",
+            "It is not length of life, but depth of life. - Ralph Waldo Emerson",
+            "The mind is everything. What you think you become. - Buddha",
+            "Success is not final, failure is not fatal: It is the courage to continue that counts. - Winston Churchill",
+            "The best way to predict the future is to create it. - Abraham Lincoln",
+            "Live as if you were to die tomorrow. Learn as if you were to live forever. - Mahatma Gandhi",
+            "That which does not kill us makes us stronger. - Friedrich Nietzsche",
+            "You only live once, but if you do it right, once is enough. - Mae West",
+            "It always seems impossible until it's done. - Nelson Mandela",
+            "Life isn’t about finding yourself. Life is about creating yourself. - George Bernard Shaw",
+            "To live is the rarest thing in the world. Most people exist, that is all. - Oscar Wilde",
+            "You can't help everyone, but everyone can help someone. - Ronald Reagan",
+            "What lies behind us and what lies before us are tiny matters compared to what lies within us. - Ralph Waldo Emerson",
+            "Imagination is more important than knowledge. - Albert Einstein",
+            "It is never too late to be what you might have been. - George Eliot",
+            "What you get by achieving your goals is not as important as what you become by achieving your goals. - Zig Ziglar",
+            "The only impossible journey is the one you never begin. - Tony Robbins",
+            "Act as if what you do makes a difference. It does. - William James",
+            "A journey of a thousand miles must begin with a single step. - Lao Tzu",
+            "The only way to do great work is to love what you do. - Steve Jobs",
+            "In the end, we will remember not the words of our enemies, but the silence of our friends. - Martin Luther King Jr.",
+            "We are what we repeatedly do. Excellence, then, is not an act, but a habit. - Aristotle",
+            "The history of all hitherto society is the history of class struggles. - Karl Marx",
+            "God is dead. God remains dead. And we have killed him. - Friedrich Nietzsche",
+            "Man is condemned to be free; because once thrown into the world, he is responsible for everything he does. - Jean-Paul Sartre",
+            "He who has a why to live can bear almost any how. - Friedrich Nietzsche",
+            "The philosopher is the one who loves wisdom, but wisdom is not a commodity to be bought or sold, it is lived and breathed in every moment. - Karl Marx",
+            "I think, therefore I am. - René Descartes",
+            "We do not remember days; we remember moments. - Cesare Pavese",
+            "An eye for an eye only ends up making the whole world blind. - Mahatma Gandhi"
+            ];
+
+
         function calculate() {
             // Input values
             const liter = parseFloat(document.getElementById("liter").value);
@@ -152,6 +205,11 @@
 
             // Show results box
             document.getElementById("results").style.display = "block";
+
+            // Display random philosophical quote
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById("philosophy").textContent = randomQuote;
+            document.getElementById("philosophy").style.display = "block";
         }
     </script>
 </body>
