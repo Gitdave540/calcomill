@@ -63,6 +63,10 @@
             <label for="addedPromille">Zugefügte Flüssigkeit in Promille:</label>
             <input type="number" id="addedPromille" placeholder="Enter value (e.g., 0)" required>
         </div>
+        <div class="input-group">
+            <label for="temperature">Aktuelle Temperatur in °C (20° als Standard):</label>
+            <input type="number" id="temperature" placeholder="20" value="20" required>
+        </div>
         <button onclick="calculate()">Berechnen</button>
         <div id="results" class="result" style="display:none;">
             <p><strong>Beizufügende Liter:</strong> <span id="addedLiters"></span> l</p>
@@ -73,21 +77,72 @@
     </div>
 
     <script>
+        // Function to get correction factor based on temperature
+        function getCorrectionFactor(temperature) {
+            const correctionFactors = {
+                10: 0.997,
+                15: 0.995,
+                20: 1.000, // Base temperature
+                25: 1.003,
+                30: 1.005
+            };
+    
+            // Interpolation for non-tabulated values
+            if (temperature < 10) return correctionFactors[10];
+            if (temperature > 30) return correctionFactors[30];
+    
+            const keys = Object.keys(correctionFactors).map(Number);
+            for (let i = 0; i < keys.length - 1; i++) {
+                if (temperature >= keys[i] && temperature <= keys[i + 1]) {
+                    const t1 = keys[i];
+                    const t2 = keys[i + 1];
+                    const f1 = correctionFactors[t1];
+                    const f2 = correctionFactors[t2];
+                    return f1 + ((temperature - t1) / (t2 - t1)) * (f2 - f1);
+                }
+            }
+            return 1.000; // Default fallback
+        }
+    
         function calculate() {
             // Input values
             const liter = parseFloat(document.getElementById("liter").value);
             const promille = parseFloat(document.getElementById("promille").value);
             const targetPromille = parseFloat(document.getElementById("targetPromille").value);
             const addedPromille = parseFloat(document.getElementById("addedPromille").value);
+            const temperature = parseFloat(document.getElementById("temperature").value);
 
             // Ensure values are valid
-            if (isNaN(liter) || isNaN(promille) || isNaN(targetPromille) || isNaN(addedPromille) || addedPromille >= targetPromille) {
+            if (isNaN(liter) || isNaN(promille) || isNaN(targetPromille) || isNaN(addedPromille) || isNaN(temperature)) {
                 alert("Bitte geben Sie gültige Werte ein.");
                 return;
             }
 
-            // Formulas
-            const addedLiters = ((-liter * promille) + (liter * targetPromille)) / (addedPromille - targetPromille);
+            // Apply correction factor for temperature
+            const correctionFactor = getCorrectionFactor(temperature);
+            const correctedPromille = promille * correctionFactor;
+
+            // Calculations based on promille values
+            let addedLiters;
+            if (targetPromille > correctedPromille) {
+                // Enrichment: Adding higher promille liquid
+                if (addedPromille <= targetPromille) {
+                    alert("Das zugefügte Promille muss höher als das Ziel-Promille sein.");
+                    return;
+                }
+                addedLiters = ((liter * (targetPromille - correctedPromille)) / (addedPromille - targetPromille));
+            } else if (targetPromille < correctedPromille) {
+                // Dilution: Adding lower promille liquid
+                if (addedPromille >= targetPromille) {
+                    alert("Das zugefügte Promille muss niedriger als das Ziel-Promille sein.");
+                    return;
+                }
+                addedLiters = ((liter * (correctedPromille - targetPromille)) / (targetPromille - addedPromille));
+            } else {
+                alert("Aktuelles und Ziel-Promille sind gleich. Keine Berechnung notwendig.");
+                return;
+            }
+
             const totalLiters = liter + addedLiters;
 
             // Display results
