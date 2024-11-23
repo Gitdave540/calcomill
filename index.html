@@ -24,7 +24,7 @@
         .input-group {
             margin-bottom: 15px;
         }
-        button {
+       button {
             background-color: rgba(255, 255, 255, 0.9); /* Slightly translucent, crystal-like */
             color: #4B4B4B; /* Deep grey, maintaining elegance without stark contrast */
             font-family: 'Didot', serif; /* Thin, elegant serif font with sophisticated strokes */
@@ -40,21 +40,21 @@
             transition: all 0.3s ease-in-out; /* Smooth transitions for hover and active states */
             position: relative; /* For pseudo-element positioning */
         }
-
+        
         /* Hover effect */
         button:hover {
-            background-color: rgba(255, 255, 255, 1); /* Brighten on hover to enhance crystal effect */
+            background-color: rgba(255, 255, 255, 0.9); /* Keep background color the same as default */
             box-shadow: 0 4px 15px rgba(255, 215, 115, 0.1); /* Soft golden glow around the button */
             transform: translateY(-3px); /* Subtle lift to simulate the distillation feel */
         }
-
+        
         /* Active state for a smooth press effect */
         button:active {
-            background-color: rgba(245, 245, 245, 0.9); /* Slightly darker background when clicked */
+            background-color: rgba(255, 255, 255, 0.9); /* Keep background color the same as default */
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Light shadow persists */
             transform: translateY(1px); /* Gentle press-in effect */
         }
-
+        
         /* Pseudo-element for additional glow effect */
         button::after {
             content: "";
@@ -65,11 +65,12 @@
             z-index: -1; /* Placed beneath the text */
             transition: all 0.3s ease;
         }
-
+        
         /* Hover effect on the pseudo-element */
         button:hover::after {
             background: rgba(255, 215, 115, 0.15); /* Soft golden hue deepens on hover */
         }
+
         .input-group label {
             display: block;
             margin-bottom: 5px;
