@@ -8,15 +8,18 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background: linear-gradient(135deg, #fdfdfd, #f1f1f1); /* Light gray and white gradient */
+            color: #333; /* Neutral dark gray for text */
         }
         .container {
             max-width: 600px;
             margin: auto;
             padding: 20px;
-            border: 1px solid #ccc;
+            border: 1px solid #dcdcdc; /* Soft gray border */
             border-radius: 10px;
-            background-color: #f9f9f9;
-            margin-bottom: 40px;  /* Add space at the bottom */
+            background-color: #ffffff; /* Elegant white */
+            margin-bottom: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
         }
         .input-group {
             margin-bottom: 15px;
@@ -24,19 +27,25 @@
         .input-group label {
             display: block;
             margin-bottom: 5px;
+            color: #555; /* Medium gray for labels */
         }
         .input-group input {
             width: 100%;
             padding: 8px;
             font-size: 16px;
+            border: 1px solid #ddd; /* Light gray border for inputs */
+            border-radius: 5px;
+            background-color: #fafafa; /* Light gray background */
+            color: #333;
         }
         .result {
             margin-top: 20px;
             padding: 10px;
-            background-color: #dff0d8;
-            border: 1px solid #d6e9c6;
+            background-color: #e8f5e9; /* Soft green */
+            border: 1px solid #c8e6c9; /* Slightly darker green border */
             border-radius: 5px;
             text-align: center;
+            color: #2e7d32; /* Rich green text */
         }
         .result img {
             max-width: 200px;
@@ -46,11 +55,89 @@
         .philosophy {
             margin-top: 20px;
             font-style: italic;
-            color: #555;
+            color: #888; /* Light gray text for philosophy */
             text-align: center;
-            display: block;  /* Ensure it's visible when displayed */
         }
+    
+        /* Game Container Styling */
+        #gameContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            font-family: 'Arial', sans-serif;
+            color: #444; /* Neutral gray for text */
+            background: #fff; /* Clean white background */
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+    
+        /* Grid Styling */
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(7, 40px); /* Sleek cell size */
+            grid-template-rows: repeat(14, 40px);
+            gap: 2px;
+            border: 3px solid #ddd; /* Soft gray border */
+            background: linear-gradient(135deg, #f7f7f7, #efefef); /* Light gray gradient */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), inset 0 2px 4px rgba(255, 255, 255, 0.1);
+            margin-top: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+    
+        .cell {
+            width: 40px;
+            height: 40px;
+            background-color: #f5f5f5; /* Very light gray */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+    
+        .cell.active {
+            background: linear-gradient(135deg, #f9eecb, #f3d899); /* Gold tones */
+            box-shadow: 0 0 10px rgba(252, 239, 196, 0.8), 0 0 20px rgba(240, 216, 140, 0.5);
+            transform: scale(1.05);
+        }
+    
+        /* Controls Section */
+        #controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+    
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #d4cfcf, #e9e4e1); /* Subtle light beige gradient */
+            color: #3d3d3d; /* Dark gray text for readability */
+            font-size: 16px;
+            font-weight: normal;
+            text-transform: none;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), inset 0 -2px 4px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #e9e4e1, #d4cfcf); /* Light beige gradient with subtle contrast */
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), inset 0 -3px 6px rgba(255, 255, 255, 0.1);
+        }
+
+        button:active {
+            transform: scale(1.03);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 -1px 3px rgba(255, 255, 255, 0.2);
+        }
+
     </style>
+    
+    
 </head>
 <body>
     <div class="container">
@@ -85,6 +172,24 @@
         <div id="philosophy" class="philosophy" style="display:none;">
             <!-- Random philosophical quote will be displayed here -->
         </div>
+        <div id="game" style="display:none;">
+            <h2>Master Brewer's Challenge</h2>
+            <p id="gameQuestion"></p>
+            <div id="gameOptions"></div>
+            <button id="gameSubmit" style="display:none;" onclick="checkAnswer()">Submit</button>
+            <p id="gameFeedback" style="display:none;"></p>
+        </div>
+        <div id="gameContainer">
+            <button id="playBrewer">Play Brewer</button>
+            <div id="tetrisGame" style="display:none;">
+              <div id="grid"></div>
+              <div id="controls">
+                <button id="leftShift">Left</button>
+                <button id="rotate">Rotate</button>
+                <button id="rightShift">Right</button>
+              </div>
+            </div>
+        </div>      
     </div>
 
     <script>
@@ -116,7 +221,7 @@
         }
     
         // Array of philosophical quotes
-       const quotes = [
+        const quotes = [
             // Jokes
             "I told my whiskey it had too many friends. It’s always a 'spirit' of the moment thing.",
             "Why do spirits never get in trouble? They always ghost their problems!",
@@ -347,6 +452,172 @@
 
 
 
+
+            function playGame() {
+                const grid = document.getElementById("grid");
+                const playBrewer = document.getElementById("playBrewer");
+                const tetrisGame = document.getElementById("tetrisGame");
+                const leftShift = document.getElementById("leftShift");
+                const rightShift = document.getElementById("rightShift");
+                const rotate = document.getElementById("rotate");
+
+                const rows = 14;
+                const cols = 7;
+                let gameGrid = Array.from({ length: rows }, () => Array(cols).fill(0));
+                let gameOver = false;
+
+                // Render grid
+                grid.innerHTML = "";
+                for (let r = 0; r < rows; r++) {
+                    for (let c = 0; c < cols; c++) {
+                        const cell = document.createElement("div");
+                        cell.classList.add("cell");
+                        grid.appendChild(cell);
+                    }
+                }
+
+                const figures = [
+                    [[[1, 1, 1, 1]]], // Line
+                    [[[1, 1], [1, 1]]], // Square
+                    [[[0, 1, 0], [1, 1, 1]], [[1, 0], [1, 1], [1, 0]], [[1, 1, 1], [0, 1, 0]], [[0, 1], [1, 1], [0, 1]]], // T-shape
+                    [[[1, 1, 0], [0, 1, 1]], [[0, 1], [1, 1], [1, 0]]], // Z-shape
+                    [[[0, 1, 1], [1, 1, 0]], [[1, 0], [1, 1], [0, 1]]], // S-shape
+                ];
+
+                let currentFigure, position, currentRotation;
+
+                function newFigure() {
+                    currentFigure = Math.floor(Math.random() * figures.length);
+                    position = { x: 3, y: 0 };
+                    currentRotation = 0;
+
+                    if (!isValidPosition()) {
+                        alert("Game Over");
+                        gameOver = true;
+                        return;
+                    }
+                }
+
+                function drawFigure() {
+                    clearGrid();
+                    if (gameOver) return;
+
+                    const figure = figures[currentFigure][currentRotation];
+                    for (let r = 0; r < figure.length; r++) {
+                        for (let c = 0; c < figure[r].length; c++) {
+                            if (figure[r][c]) {
+                                const row = position.y + r;
+                                const col = position.x + c;
+                                if (row >= 0 && col >= 0 && row < rows && col < cols) {
+                                    const cell = grid.children[row * cols + col];
+                                    cell.classList.add("active");
+                                }
+                            }
+                        }
+                    }
+                }
+
+                function clearGrid() {
+                    Array.from(grid.children).forEach((cell) => cell.classList.remove("active"));
+                }
+
+                function moveFigure(dx) {
+                    position.x += dx;
+                    if (!isValidPosition()) {
+                        position.x -= dx;
+                    }
+                    drawFigure();
+                }
+
+                function rotateFigure() {
+                    currentRotation = (currentRotation + 1) % figures[currentFigure].length;
+                    if (!isValidPosition()) {
+                        currentRotation = (currentRotation - 1 + figures[currentFigure].length) % figures[currentFigure].length;
+                    }
+                    drawFigure();
+                }
+
+                function dropFigure() {
+                    if (gameOver) return;
+
+                    position.y++;
+                    if (!isValidPosition()) {
+                        position.y--;
+                        lockFigure();
+                        clearFullLines();
+                        newFigure();
+                    }
+                    drawFigure();
+                }
+
+                function isValidPosition() {
+                    const figure = figures[currentFigure][currentRotation];
+                    for (let r = 0; r < figure.length; r++) {
+                        for (let c = 0; c < figure[r].length; c++) {
+                            if (figure[r][c]) {
+                                const row = position.y + r;
+                                const col = position.x + c;
+                                if (row >= rows || col < 0 || col >= cols || gameGrid[row][col]) {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                    return true;
+                }
+
+                function lockFigure() {
+                    const figure = figures[currentFigure][currentRotation];
+                    for (let r = 0; r < figure.length; r++) {
+                        for (let c = 0; c < figure[r].length; c++) {
+                            if (figure[r][c]) {
+                                const row = position.y + r;
+                                const col = position.x + c;
+                                if (row >= 0) {
+                                    gameGrid[row][col] = 1;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                function clearFullLines() {
+                    for (let r = rows - 1; r >= 0; r--) {
+                        if (gameGrid[r].every((cell) => cell === 1)) {
+                            gameGrid.splice(r, 1);
+                            gameGrid.unshift(Array(cols).fill(0));
+                            r++; // Recheck the same line
+                        }
+                    }
+                }
+
+                playBrewer.addEventListener("click", () => {
+                    tetrisGame.style.display = "block";
+                    playBrewer.style.display = "none";
+                    newFigure();
+                    drawFigure();
+                    setInterval(dropFigure, 1000);
+                });
+
+                leftShift.addEventListener("click", () => moveFigure(-1));
+                rightShift.addEventListener("click", () => moveFigure(1));
+                rotate.addEventListener("click", rotateFigure);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         function calculate() {
             // Input values
             const liter = parseFloat(document.getElementById("liter").value);
@@ -400,7 +671,8 @@
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             document.getElementById("philosophy").textContent = randomQuote;
             document.getElementById("philosophy").style.display = "block";
+            playGame();
         }
+
+        
     </script>
-</body>
-</html>
